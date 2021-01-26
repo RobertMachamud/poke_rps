@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.1.1/css/hover-min.css" type="text/css" />
+    <script src="https://kit.fontawesome.com/7443d15568.js" crossorigin="anonymous"></script>
+    <title>Developers Nostalgia</title>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+        }
+
+        .flex-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+/*        MAIN CONTAINER */
+        .main-cont {
+            width: 100vw;
+            height: 100vh;
+            padding: 0 5%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #525252;
+        }
+
+        
+/*        GAME CONTAINER */
+        .game-cont {
+/*            border: solid;*/
+            border-radius: 20px;
+            position: relative;
+        }
+
+/*        RPS SCORE SECTION */
+        .rps-score-section
+        {
+            width: 100%;
+            min-height: 6em;
+            background: silver; 
+            justify-content: space-between;
+            padding: 0 10%;
+            text-align: center;
+        }
+
+        .rps-score
+        {
+            width: 3em;
+            height: 3em;
+/*            margin: em;*/
+            background: black;
+            color: #fff;
+            font-size: 1.6em;
+        }
+        
+        .rps-txt
+        {
+            font-size: 1.3em;
+            font-weight: bold;
+            transition: .3s;
+        }
+        
+        .rps-score-txt
+        {
+            font-weight: bolder;
+        }
+
+
+/*        RPS ARENA SECTION */
+        
+        .rps-arena {
+            position: relative;
+            background: #2d572c;
+            background: lightgreen;
+            background: #618a3d;
+            min-height: 30em;
+            overflow-x: hidden;
+        }
+        
+/*        RPS Arena player Areas */
+        .rps-arena-trainer-area
+        {
+            position: absolute;
+            top: 25%;
+            width: 10em;
+            height: 15em;
+            border: solid 10px #000;
+            border-radius: 5px;
+            background: crimson;
+            background: #fafafa;
+            background: silver;
+        }
+        
+        .rps-player-area
+        {
+            left: -10px;
+        }
+        
+        .rps-computer-area
+        {
+            right: -10px;
+        }
+        
+/*        RPS Arena Circle */
+        .rps-arena-center-circle
+        {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 25em;
+            width: 25em;
+            border-radius: 50%;
+/*            border: solid #000 5px;*/
+            border: solid #000 10px;
+            background: #fafafa;
+            background: crimson;
+        }
+
+        .rps-arena-center-circle:before
+        {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 100%;
+/*            width: 5px;*/
+            width: 10px;
+            background: #000;
+        }
+        
+        .rps-arena-center-circle:after
+        {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 3em;
+            height: 3em;
+            background: #fafafa;
+/*            background: crimson;*/
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+/*            border: solid #000 5px;*/
+            border: solid #000 10px;
+        }
+        
+        .field-both
+        {
+            width: 50%;
+/*            background: lightgreen;*/
+            height: 100%;
+            z-index: 5;
+            
+        }
+        
+        .field-player
+        {
+            transform: rotateY(180deg);
+        }
+        
+        .field-both img
+        {
+            object-fit: cover;
+            height: 35%;
+        }
+
+
+        .rps-cont {
+            flex-wrap: wrap;
+            background-color: darkgoldenrod;
+            background-color: ;
+            padding: 1em;
+        }
+
+        .choice {
+            position: relative;
+            flex-direction: column;
+            /*            padding: .em .1em;*/
+            margin: .1em;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: crimson;
+            cursor: pointer;
+            transition: .3s;
+        }
+        
+        .choice:hover
+        {
+            background: #000;
+        }
+
+        .choice img {
+            /*            height: 60%;*/
+            height: 60%;
+            object-fit: cover;
+        }
+
+        .choice-descr {
+            /*            font-size: 1em;*/
+            color: #fff;
+            border-radius: 25px;
+            text-transform: capitalize;
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+
+    <div class="main-cont">
+        <div class="game-cont">
+            <!--          <button class="start-rps-btn">Start Game</button>-->
+            <div class="rps-score-section flex-center">
+               <span class="rps-score-txt">Player Score</span>
+                <div class="rps-score player-score flex-center">2</div>
+                <span class="rps-txt">Choose Your Pokemon!</span>
+                <div class="rps-score computer-score flex-center">4</div>
+                <span class="rps-score-txt">Computer Score</span>
+            </div>
+            <div class="rps-arena">
+               <div class="rps-arena-trainer-area rps-player-area"></div>
+               <div class="rps-arena-trainer-area rps-computer-area"></div>
+                <div class="rps-arena-center-circle flex-center">
+                    <div class="field-both flex-center field-player">
+                        <img src="firepkmn.png" alt="">
+                    </div>
+                    <div class="field-both flex-center field-computer">
+                        <img src="dragonpkmn.png" alt="">
+                    </div>
+                </div>
+
+            </div>
+            <div class="rps-cont flex-center">
+                
+                <!--
+            <div class="choices-cont">
+                <div class="choice flex-center" data-choice="rock">
+                    <img src="blastoisegunpkmn.png" alt="rockpokemon">
+                    <span class="choice-descr">Gun</span>
+                </div>
+            </div>
+-->
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        // Global Variables
+        const rpsCont = document.querySelector(".rps-cont");
+
+
+        // Class for every possible Choice (inkl. strong against)
+        class Choice {
+            constructor(name, winsAgainst) {
+                this.name = name;
+                this.winsAgainst = winsAgainst;
+//                this.img = img
+            }
+        }
+        // bg
+
+
+        // All choices
+        const rock = new Choice("rock", ["sponge", "wolf", "tree", "human", "snake", "scissors", "fire"]);
+        const gun = new Choice("gun", ["wolf", "tree", "human", "snake", "scissors", "fire", "rock"]);
+        const lightning = new Choice("lightning", ["tree", "human", "snake", "scissors", "fire", "rock", "gun"]);
+        const devil = new Choice("devil", ["human", "snake", "scissors", "fire", "rock", "gun", "lightning"]);
+        const dragon = new Choice("dragon", ["snake", "scissors", "fire", "rock", "gun", "lightning", "devil"]);
+        const water = new Choice("water", ["scissors", "fire", "rock", "gun", "lightning", "devil", "dragon"]);
+        const air = new Choice("air", ["fire", "rock", "gun", "lightning", "devil", "dragon", "water"]);
+        const paper = new Choice("paper", ["rock", "gun", "lightning", "devil", "dragon", "water", "air"]);
+        const sponge = new Choice("sponge", ["gun", "lightning", "devil", "dragon", "water", "air", "paper"]);
+        const wolf = new Choice("wolf", ["lightning", "devil", "dragon", "water", "air", "paper", "sponge"]);
+        const tree = new Choice("tree", ["devil", "dragon", "water", "air", "paper", "sponge", "wolf"]);
+        const human = new Choice("human", ["dragon", "water", "air", "paper", "sponge", "wolf", "tree"]);
+        const snake = new Choice("snake", ["water", "air", "paper", "sponge", "wolf", "tree", "human"]);
+        const scissors = new Choice("scissors", ["air", "paper", "sponge", "wolf", "tree", "human", "snake"]);
+        const fire = new Choice("fire", ["paper", "sponge", "wolf", "tree", "human", "snake", "scissors"]);
+        // add bg
+        
+        let allChoices = [rock, gun, lightning, devil, dragon, water, air, paper, sponge, wolf, tree, human, snake, scissors, fire];
+
+
+        // remove superClass evtl.
+
+        // Main Class for Player - includes allChoices
+        class Player {
+            constructor(choices) {
+                this.choices = choices;
+            }
+        }
+
+
+        // Class for Player who chooses randomly through the allChoices Array
+        class RandomPlayer extends Player {
+            constructor(choices) {
+                super(choices);
+            }
+
+            randomChoice() {
+                return this.choices[Math.floor(Math.random() * this.choices.length)]
+            }
+        }
+
+
+        // Class for Player who chooses strictly linear through the allChoices Array
+        class CircularPlayer extends Player {
+            constructor(choices, circleIndex) {
+                super(choices);
+                this.circleIndex = circleIndex;
+            }
+
+            circularChoice() {
+                this.nextChoice();
+                if (this.circleIndex > this.choices.length) {
+                    this.circleIndex = 1;
+                }
+                return this.choices[this.circleIndex - 1];
+            }
+
+            nextChoice() {
+                this.circleIndex++;
+            }
+        }
+
+
+        class RandomStylePlayer extends Player {
+            constructor(choices, rPlayer, cPlayer, cCPlayer) {
+                super(choices);
+                this.rPlayer = rPlayer;
+                this.cPlayer = cPlayer;
+                this.cCPlayer = cCPlayer;
+            }
+
+            //            setUp() {
+            //                this.rPlayer = new RandomPlayer();
+            //            }
+        }
+
+        // Class for Player who always takes the previous choice of his opponent
+        class copyCatPlayer extends Player {
+            constructor(choices, copy) {
+                super(choices);
+                this.copy = copy;
+            }
+
+            copyCatChoice() {
+                if (this.copy) {
+                    let oldCopy = this.copy;
+                    this.storeCopy();
+                    return oldCopy;
+                }
+                this.storeCopy();
+                return this.firstMove();
+            }
+
+            storeCopy() {
+                this.copy = playersChoice;
+            }
+
+            firstMove() {
+                return this.choices[0];
+            }
+        }
+
+
+        
+        
+        
+        
+        // MAIN Class for Game
+        class Game {
+            constructor() {
+//                this.computerPlayer = computerPlayer;
+                this.playersChoice = "";
+                this.computerChoice = allChoices;
+                this.choicesDisabled = false;
+            }
+
+            
+            startGame() {
+                this.resetGame();
+                this.revealChoices();
+            }
+
+            
+            resetGame() {
+                this.playerScore = 0;
+                this.computerScore = 0;
+                this.choicesDisabled = false;
+                $(".field-both").each(() => this.html = "");
+            }
+
+            
+            revealChoices() {
+                // animation to set choices in circle
+                $(".field-player").innerHTML = `<img src="${playersChoice.name}.png" alt="${playersChoice.name}">`;
+                
+                $(".field-computer").innerHTML = `<img src="${computerChoice.name}.png" alt="${computerChoice.name}">`;
+            }
+            
+
+            checkForWin() {
+                if (this.playersChoice.name === this.computerChoice.name) {
+                    this.draw();
+                } else if (this.playersChoice.name.winsAgainst.includes(this.computerChoiceChoice.name.name)) {
+                    this.declareWinnerAnimation(true);
+                } else {
+                    this.declareWinnerAnimation(false);
+                }
+            }
+
+            
+            draw() {
+                this.nextRound();
+            }
+            
+            
+            declareWinnerAnimation(playerWins) {
+                if (playerWins) {
+//                    $(".field-computer").firstChild.css(); 
+                    $(".field-computer").html = "";
+                    this.playerScore++;
+                } else {
+                    $(".field-player").html = "";
+                    this.computerScore++;
+                }
+            }
+            
+
+            nextRound() {
+                this.DeclareWinnerOfGame();
+                this.choicesDisabled = false;
+                $(".field-both").each(() => this.html = "");
+            }
+            
+            
+            playerWinsGame() {
+
+            }
+
+            playerLosesGame() {
+
+            }
+        }
+
+
+
+        // try to put this one in the main game class...
+        
+        // Selecting by clicking a choice and initiates animations / checking-for-win function
+        const playerSelectChoice = (e) => {
+            console.log("I clicked a choice: ", e.target); // make sure img or target element is on top and 100% width/height!
+            if (!this.choicesDisabled) {
+                this.choicesDisabled = true;
+                playersChoice = allChoices[allChoices.indexOf(e.target.dataset)];  // could be a bug (dataset is a string)
+                // triggers animation for summoning (try to include in main class)
+            }
+        }
+
+
+
+
+
+
+        // need to put this in start Game function - remove start Screen!!!
+        const createChoicesBtns = () => {
+            allChoices.forEach(c => {
+            rpsCont.insertAdjacentHTML("beforeend", `
+                <div class="choices-cont">
+                    <div class="choice flex-center" data-choice="${c.name}">
+                        <img src="${c.name}pkmn.png" alt="${c.name} pokemon">
+                        <span class="choice-descr">${c.name}</span>
+                    </div>
+                </div>
+            `);
+        });
+        
+        document.querySelectorAll(".choice").forEach(acb => acb.addEventListener("click", playerSelectChoice));
+        }
+
+        createChoicesBtns();
+
+
+        //        const summonAnimaion = () => 
+
+
+        
+
+
+
+        // try to finsish the game with zb random player only or p1 vs p2
+
+        // add img as third constructing part evtl or try to take the name and just add + ".png"
+        
+        
+//        
+//        constructor(computerPlayer) {
+//                this.computerPlayer = computerPlayer;
+//                this.playerChoice = playersChoice;
+//                this.computerChoice = computerChoice;
+//                this.choicesDisabled = choicesDisabled;
+//            }
+        
+    </script>
+
+
+</body></html>
